@@ -1,0 +1,90 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Commercial Finance Calculators API (Node.js, API Gateway HTTP API)
+
+Globals:
+  Function:
+    Runtime: nodejs20.x
+    Timeout: 10
+    MemorySize: 128
+
+# All four functions below omit an explicit ApiId on their HttpApi event,
+# so SAM attaches them all to one shared implicit HTTP API
+# (logical ID: ServerlessHttpApi) instead of creating four separate APIs.
+Resources:
+  AmortizationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handler.handler
+      CodeUri: loan-amortization/
+      Events:
+        Amortization:
+          Type: HttpApi
+          Properties:
+            Path: /amortization
+            Method: post
+
+  DscrFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handler.handler
+      CodeUri: dscr/
+      Events:
+        Dscr:
+          Type: HttpApi
+          Properties:
+            Path: /dscr
+            Method: post
+
+  NpvIrrFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handler.handler
+      CodeUri: npv-irr/
+      Events:
+        NpvIrr:
+          Type: HttpApi
+          Properties:
+            Path: /npv-irr
+            Method: post
+
+  RentVsBuyFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handler.handler
+      CodeUri: rent-vs-buy/
+      Events:
+        RentVsBuy:
+          Type: HttpApi
+          Properties:
+            Path: /rent-vs-buy
+            Method: post
+
+  BreakEvenFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handler.handler
+      CodeUri: break-even/
+      Events:
+        BreakEven:
+          Type: HttpApi
+          Properties:
+            Path: /break-even
+            Method: post
+
+Outputs:
+  AmortizationUrl:
+    Description: Invoke URL for the loan amortization endpoint
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/amortization"
+  DscrUrl:
+    Description: Invoke URL for the DSCR endpoint
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/dscr"
+  NpvIrrUrl:
+    Description: Invoke URL for the NPV/IRR endpoint
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/npv-irr"
+  RentVsBuyUrl:
+    Description: Invoke URL for the Rent vs Buy endpoint
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/rent-vs-buy"
+  BreakEvenUrl:
+    Description: Invoke URL for the Break-Even endpoint
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/break-even"

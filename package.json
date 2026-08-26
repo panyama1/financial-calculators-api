@@ -1,0 +1,7 @@
+{
+  "name": "financial-calculators-api",
+  "version": "1.0.0",
+  "description": "Suite of financial calculators (Loan Amortization, DSCR, NPV/IRR, Rent vs Buy, Break-Even) as AWS Lambda functions behind one shared API Gateway HTTP API",
+  "type": "module",
+  "license": "UNLICENSED"
+}
