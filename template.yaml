@@ -2,11 +2,20 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Commercial Finance Calculators API (Node.js, API Gateway HTTP API)
 
-Globals:
-  Function:
-    Runtime: nodejs20.x
-    Timeout: 10
-    MemorySize: 128
+   Globals:
+     Function:
+       Runtime: nodejs20.x
+       Timeout: 10
+       MemorySize: 128
+     HttpApi:
+       CorsConfiguration:
+         AllowOrigins:
+           - "*"
+         AllowMethods:
+           - POST
+           - OPTIONS
+         AllowHeaders:
+           - Content-Type
 
 # All four functions below omit an explicit ApiId on their HttpApi event,
 # so SAM attaches them all to one shared implicit HTTP API
